@@ -51,3 +51,5 @@ jobs:
           zap report/
           Scan_Screenshot_1.png
           Scan_Screenshot_2.png
+          Scan_Screenshot_3.png
+          
