@@ -1,0 +1,42 @@
+name: Validation CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validation:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install Dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Execute Automated Tests
+      run: |
+        mkdir -p validation_logs
+        pytest tests/ > validation_logs/test_results.txt
+
+    - name: Generate Validation Logs
+      run: |
+        echo "Validation completed on $(date)" > validation_logs/validation_summary.txt
+
+    - name: Upload Validation Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: validation-evidence
+        path: validation_logs/
